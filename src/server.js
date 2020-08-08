@@ -1,3 +1,5 @@
+
+//Datas
 const proffys = [
     {
         name: "Diego Fernandes",
@@ -23,20 +25,45 @@ const proffys = [
     }
 ]
 
+const subjects =[
+    "Artes",
+    "Biologia",
+    "Ciências",
+    "Educação física",
+    "Física",
+    "Geografia",
+    "História",
+    "Matemática",
+    "Português",
+    "Química",
+]
 
+const weekdays = [
+    "Domingo",
+    "Segunda-feira",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",
+    "Sexta-feira",
+    "Sábado",
+]
+
+//functions
 function pageLanding(req, res) {
     return res.render("index.html")
 }
 
 function pageStudy(req, res) {
-    return res.render("study.html", { proffys })
+    const filters = req.query
+    return res.render("study.html", { proffys, filters, subjects, weekdays })
 }
 
 function pageGiveClasses(req, res) {
-    return res.render("give-classes.html")
+    const data = req.query //add data to the proffys
+    return res.render("give-classes.html", {subjects, weekdays})
 }
 
-
+//server 
 const express = require('express')
 const server = express()
 
@@ -47,13 +74,9 @@ nunjucks.configure('src/views', {
     noCache: true,
 })
 
-
-
-
-
+//starting and setting up the server
 server.use(express.static("public")) //setting up static files
 .get("/", pageLanding) //routes to the application, so node can run them
 .get("/study", pageStudy)
 .get("/give-classes", pageGiveClasses)
-
 .listen(5500)
